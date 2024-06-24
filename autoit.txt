@@ -1,0 +1,38 @@
+; Function to download the file using Chrome
+Func DownloadFileWithChrome($url)
+    ; Open Chrome and navigate to the URL
+    Run("chrome.exe " & $url)
+    Sleep(5000) ; Wait for Chrome to open and load the URL
+
+    ; Wait for the download to complete (assuming default download location and auto-download setting)
+    Sleep(10000) ; Adjust the sleep time if needed
+
+    ; Close Chrome
+    ProcessClose("chrome.exe")
+EndFunc
+
+; Main script
+
+; Step 1: Download the PDF file using Chrome
+DownloadFileWithChrome("https://mal.com/123.pdf")
+
+; Step 2: Open explorer.exe
+Run("explorer.exe")
+Sleep(2000)
+
+; Step 3: Navigate to the Downloads folder
+Send("#r")
+Sleep(500)
+Send(@UserProfileDir & "\Downloads{ENTER}")
+Sleep(2000)
+
+; Step 4: Open 123.pdf file
+Send("123.pdf{ENTER}")
+Sleep(5000) ; Adjust the sleep time if needed
+
+; Step 5: Close the PDF file (assuming default PDF viewer)
+Send("!{F4}")
+Sleep(1000)
+
+; Step 6: Close the Windows Explorer window
+Send("!{F4}")
