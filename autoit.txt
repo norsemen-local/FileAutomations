@@ -1,35 +1,29 @@
 #include <Timers.au3>
 
-; Set the time period to 1 minute (60000 milliseconds)
-Local $iTimePeriod = 60000
+Example()
 
-; Get the start time
-Local $hTimer = _Timer_Init()
+Func Example()
+    ; Set the time period to 1 minute (60000 milliseconds)
+    Local $iTimePeriod = 60000
 
-; Run the loop for the specified time period
-While _Timer_Diff($hTimer) < $iTimePeriod
-    ; Generate random coordinates for mouse movement within the screen bounds
-    Local $iX = Random(0, @DesktopWidth, 1)
-    Local $iY = Random(0, @DesktopHeight, 1)
+    ; Get the start time
+    Local $hTimer = TimerInit()
 
-    ; Move the mouse to the random coordinates
-    MouseMove($iX, $iY, 10) ; The third parameter is the speed of the movement
+    ; Run the loop for the specified time period
+    While TimerDiff($hTimer) < $iTimePeriod
+        ; Generate random coordinates for mouse movement within the screen bounds
+        Local $iX = Random(0, @DesktopWidth, 1)
+        Local $iY = Random(0, @DesktopHeight, 1)
 
-    ; Pause for a short random time between movements
-    Sleep(Random(500, 1500))
+        ; Move the mouse to the random coordinates
+        MouseMove($iX, $iY, 10) ; The third parameter is the speed of the movement
 
-    ; Randomly decide whether to click the mouse
-    If Random(0, 1, 1) = 1 Then
-        MouseClick("left")
-    EndIf
-WEnd
+        ; Pause for a short random time between movements
+        Sleep(Random(500, 1500))
 
-; Function to initialize a timer
-Func _Timer_Init()
-    Return TimerInit()
-EndFunc
-
-; Function to get the elapsed time
-Func _Timer_Diff($hTimer)
-    Return TimerDiff($hTimer)
+        ; Randomly decide whether to click the mouse
+        If Random(0, 1, 1) = 1 Then
+            MouseClick("left")
+        EndIf
+    WEnd
 EndFunc
