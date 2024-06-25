@@ -1,3 +1,7 @@
+#include <InetConstants.au3>
+#include <MsgBoxConstants.au3>
+#include <WinAPIFiles.au3>
+
 Func Example()
         ; Save the downloaded file to the temporary folder.
         Local $sFilePath = _WinAPI_GetTempFileName(@TempDir)
